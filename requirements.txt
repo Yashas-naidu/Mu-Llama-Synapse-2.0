@@ -1,0 +1,10 @@
+google-generativeai 
+wikipedia
+pillow
+streamlit
+opencv-python-headless
+numpy
+scipy
+pandas
+google-generativeai --upgrade
+wikipedia --upgrade 

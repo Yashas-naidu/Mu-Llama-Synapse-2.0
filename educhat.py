@@ -1,110 +1,3 @@
-
-
-# # Configure GenerativeAI API
-# genai.configure(api_key="AIzaSyC2uRB95Pu8fkMxL1_oOQzkq9B8w_JBMe")
-# mining_model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
-
-# # Function to convert text to Markdown format
-# def to_markdown(text):
-#     text = text.replace('•', '  *')
-#     return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
-
-# # Function to search Wikipedia and summarize relevant documents
-# def wikipedia_search(search_queries, n_topics):
-#     search_history = set()  # tracking search history
-#     search_urls = []
-#     summary_results = []
-
-#     for query in search_queries:
-#         st.write(f'Searching for "{query}"')
-#         search_terms = wikipedia.search(query)
-#         st.write(f"Related search terms: {search_terms[:n_topics]}")
-
-#         for search_term in search_terms[:n_topics]:  # select first `n_topics` candidates
-#             if search_term in search_history:  # check if the topic is already covered
-#                 continue
-
-#             st.write(f'Fetching page: "{search_term}"')
-#             search_history.add(search_term)  # add to search history
-
-#             try:
-#                 # extract the relevant data by using GenerativeAI model
-#                 page = wikipedia.page(search_term, auto_suggest=False)
-#                 url = page.url
-#                 st.write(f"Information Source: {url}")
-#                 search_urls.append(url)
-#                 page_content = page.content
-
-#                 response = mining_model.generate_content(textwrap.dedent(f"""
-#                     Extract relevant information about user's query: {query}
-#                     From this source:
-#                     {page_content}
-#                     Note: Do not summarize. Only Extract and return the relevant information
-#                 """))
-
-#                 urls = [url]
-
-#                 if response.candidates[0].citation_metadata:
-#                     extra_citations = response.candidates[0].citation_metadata.citation_sources
-#                     extra_urls = [source.uri for source in extra_citations]  # Changed attribute name to 'uri'
-#                     urls.extend(extra_urls)
-#                     search_urls.extend(extra_urls)
-#                     st.write("Additional citations:", response.candidates[0].citation_metadata.citation_sources)
-
-#                 try:
-#                     text = response.text
-#                 except ValueError:
-#                     pass
-#                 else:
-#                     summary_results.append(text + "\n\nBased on:\n  " + ',\n  '.join(urls))
-#             except DisambiguationError:
-#                 st.write(f"""Results when searching for "{search_term}" (originally for "{query}") were ambiguous, hence skipping""")
-#             except PageError:
-#                 st.write(f'{search_term} did not match with any page id, hence skipping.')
-
-#     st.write(f"Information Sources:")
-#     for url in search_urls:
-#         st.write('    ', url)
-
-#     return summary_results
-
-# # Function to generate summary from uploaded audio file
-# def generate_summary_from_audio(uploaded_file):
-#     if uploaded_file is not None:
-#         # Assuming the uploaded file is an audio file
-#         # Process the audio file here using GenerativeAI
-#         prompt = "Listen carefully to the following audio file. Provide a brief summary."
-#         response = mining_model.generate_content([prompt, uploaded_file.getvalue()])
-#         return response.text
-#     else:
-#         return "Please upload an audio file."
-
-
-# # Sidebar
-# option = st.sidebar.radio(
-#     'Which task do you want to perform?',
-#     ('Wiki', 'Audio'))
-
-# # Wiki
-# if option == 'Wiki':
-#     search_query = st.text_input("Enter your topic")
-#     n_topics = st.number_input("Enter the number of topics to search (recommended 3 for best results)", value=1, min_value=1)
-#     if st.button("Search"):
-#         if search_query:
-#             results = wikipedia_search([search_query], n_topics)
-#             for result in results:
-#                 st.markdown(result)
-
-# # Audio
-# elif option == 'Audio':
-#     st.header("Audio Summary Generator")
-#     uploaded_file = st.file_uploader("Choose an audio file", type=["mp3", "wav"])
-#     if uploaded_file is not None:
-#         if st.button("Generate Summary"):
-#             summary = generate_summary_from_audio(uploaded_file)
-#             st.header("Generated Summary:")
-#             st.markdown(summary)
-
 import streamlit as st
 import google.generativeai as genai
 import os
@@ -127,7 +20,7 @@ model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
 
 
 
-FRAME_EXTRACTION_DIRECTORY = r"C:\Users\YASHAS\Mu-Llama\Frames"
+FRAME_EXTRACTION_DIRECTORY = "/workspaces/Mu-Llama/Frames"
 FRAME_PREFIX = "_frame"
 
 def create_frame_output_dir(output_dir):
@@ -289,7 +182,7 @@ if option == 'Audio':
 
 
 elif option == 'Video':
-    files = glob.glob(r'C:\Users\YASHAS\Mu-Llama\Frames\*.jpg')
+    files = glob.glob('/workspaces/Mu-Llama/Frames*.jpg')
     for f in files:
         os.remove(f)
     uploaded_file = st.file_uploader("Choose a video file", type=['mp4', 'mov', 'avi'])
