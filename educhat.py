@@ -167,14 +167,14 @@ if option == 'Audio':
             f.write(audio_bytes)
         # Then upload the file to the Generative AI service
         your_file = genai.upload_file(path=file_path)
-        if 'prompts' not in st.session_state:
-            st.session_state.prompts = []
+        if 'prompts1' not in st.session_state:
+            st.session_state.prompts1 = []
         prompt = st.text_input("Enter your prompt", key='unique')
         if prompt:
             model = genai.GenerativeModel('models/gemini-1.5-pro-latest')
             response = model.generate_content([prompt, your_file], stream=True)
             response.resolve()
-            st.session_state.prompts.append((prompt, response.text))
+            st.session_state.prompts1.append((prompt, response.text))
         for prompt, response in reversed(st.session_state.prompts):
             st.markdown(f'<p style="font-family:sans-serif; color:Red; font-size: 20px;"><b>Prompt:</b> {prompt}</p>', unsafe_allow_html=True)
             st.markdown(f'<p style="font-family:sans-serif; color:White;"><b>Response:</b> {response}</p>', unsafe_allow_html=True)
