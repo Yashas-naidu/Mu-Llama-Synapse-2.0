@@ -20,7 +20,7 @@ model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
 
 
 
-FRAME_EXTRACTION_DIRECTORY = "/workspaces/Mu-Llama/Frames"
+FRAME_EXTRACTION_DIRECTORY = "/Mu-Llama/Frames"
 FRAME_PREFIX = "_frame"
 
 def create_frame_output_dir(output_dir):
@@ -182,7 +182,7 @@ if option == 'Audio':
 
 
 elif option == 'Video':
-    files = glob.glob('/workspaces/Mu-Llama/Frames*.jpg')
+    files = glob.glob('/Mu-Llama/Frames*.jpg')
     for f in files:
         os.remove(f)
     uploaded_file = st.file_uploader("Choose a video file", type=['mp4', 'mov', 'avi'])
