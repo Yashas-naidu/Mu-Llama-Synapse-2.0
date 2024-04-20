@@ -151,7 +151,9 @@ def make_request(prompt, files):
 #     ('Audio', 'Video', 'Wiki'))
 option = st.sidebar.radio(
     'Which task do you want to perform?',
-    ('Audio', 'Video', 'Wiki','Image'))
+    ('Audio',
+    #   'Video', 
+      'Wiki','Image'))
 
 
 if option == 'Audio':
@@ -253,6 +255,9 @@ elif option=='Image':
         st.image(image_bytes, caption='Uploaded Image', use_column_width=True)
         img = Image.open(io.BytesIO(image_bytes))
         img = img.resize((512, 512))
+        # Convert RGBA image to RGB
+        if img.mode == 'RGBA':
+            img = img.convert('RGB')
         model = genai.GenerativeModel('gemini-pro-vision')
         if 'prompts' not in st.session_state:
             st.session_state.prompts = []
