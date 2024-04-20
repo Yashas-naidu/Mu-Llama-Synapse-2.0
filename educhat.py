@@ -151,9 +151,10 @@ def make_request(prompt, files):
 #     ('Audio', 'Video', 'Wiki'))
 option = st.sidebar.radio(
     'Which task do you want to perform?',
-    ('Audio',
+    ('Image',
     #   'Video', 
-      'Wiki','Image'))
+    #   'Wiki',
+      'Audio'))
 
 
 if option == 'Audio':
